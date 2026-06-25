@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <rect width="1024" height="1024" rx="192" fill="none" />
+  <g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Shield base (subtle, integrated behind the W) -->
+    <path d="M512 160c-118 0-214 96-214 214 0 232 214 352 214 352s214-120 214-352c0-118-96-214-214-214z" fill="#4F46E5" opacity="0.14" />
+
+    <!-- Main rounded W shape built from geometric blocks -->
+    <g transform="translate(220,220)">
+      <path d="M84 0 L156 0 C172 0 184 12 184 28 L184 312 C184 328 172 340 156 340 L84 340 C68 340 56 328 56 312 L56 196 L0 196 C-16 196 -28 184 -28 168 L-28 84 C-28 68 -16 56 0 56 L56 56 L56 28 C56 12 68 0 84 0 Z" fill="#7C3AED" transform="translate(0,0) scale(1.2)" />
+      <path d="M420 0 L492 0 C508 0 520 12 520 28 L520 312 C520 328 508 340 492 340 L420 340 C404 340 392 328 392 312 L392 196 L336 196 C320 196 308 184 308 168 L308 84 C308 68 320 56 336 56 L392 56 L392 28 C392 12 404 0 420 0 Z" fill="#7C3AED" transform="translate(-110,0) scale(1.2)" />
+
+      <!-- Center notch to form W negative space -->
+      <path d="M248 92 L292 220 L336 92 L380 220 L424 92" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" opacity="0.95" />
+    </g>
+  </g>
+</svg>

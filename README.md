@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Workbench — Role & Permission Builder
 
-## Getting Started
+A production-quality RBAC (Role-Based Access Control) admin dashboard built with Next.js 15, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Features
+
+- **Role Management** — Create, edit, and delete custom roles with granular permissions
+- **Permission Matrix** — Interactive checkbox grid organized by resource and action
+- **User Management** — Assign and unassign multiple roles per user
+- **Effective Permissions** — Real-time union resolution across all assigned roles
+- **Toast Notifications** — Feedback for every action
+- **Delete Confirmation** — Safeguarded destructive operations
+- **Search & Filter** — Quickly find roles by name or description
+
+## Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Permission Matrix
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+19 permissions across 5 resources:
 
-## Learn More
+| Resource | Permissions |
+|----------|-------------|
+| Projects | view, create, edit, delete, archive |
+| Tasks    | view, create, edit, delete, assign  |
+| Members  | view, invite, remove, update_role   |
+| Billing  | view, update, download_invoices     |
+| Settings | view, update                        |
 
-To learn more about Next.js, take a look at the following resources:
+## Seed Data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Roles
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Role | Permissions | Description |
+|------|-------------|-------------|
+| Owner | All 19 | Full workspace access |
+| Admin | 18 (no billing:download_invoices) | Manages projects, tasks, members |
+| Viewer | 3 (view only) | Read-only access |
+| Contractor | 7 (project + task, no delete/billing/settings) | External collaborator |
 
-## Deploy on Vercel
+### Users
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| User | Roles | Effective Permissions |
+|------|-------|-----------------------|
+| Alex Kim | Owner + Admin | 19 (union = all) |
+| Priya Sharma | Contractor | 7 |
+| Marcus Lee | Viewer | 3 |
+| Sara Torres | Admin | 18 |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Reference
+
+```
+GET    /api/permissions
+GET    /api/roles
+POST   /api/roles
+PUT    /api/roles/:id
+DELETE /api/roles/:id
+GET    /api/users
+POST   /api/users/:id/roles
+DELETE /api/users/:id/roles
+GET    /api/users/:id/effective-permissions
+```
+
+## Project Structure
+
+```
+workbench-rbac/
+├── app/
+│   ├── api/              # Next.js Route Handlers
+│   ├── globals.css       # Design tokens + animations
+│   ├── layout.tsx        # Root layout with ToastProvider
+│   └── page.tsx          # Single dashboard page
+├── components/
+│   ├── RoleList.tsx      # Left panel
+│   ├── RoleEditor.tsx    # Middle panel
+│   ├── PermissionMatrix.tsx
+│   ├── UsersPanel.tsx    # Right panel
+│   ├── EffectivePermissions.tsx
+│   ├── Toast.tsx
+│   └── ConfirmModal.tsx
+├── lib/
+│   ├── store.ts          # In-memory store (global singleton)
+│   └── permissions.ts   # Matrix + union resolver
+├── types/
+│   └── index.ts
+├── Architecture.md
+└── README.md
+```
+
+## Tech Stack
+
+- **Next.js 15** — App Router, Route Handlers, Turbopack
+- **TypeScript** — Strict typing throughout
+- **Tailwind CSS** — Utility-first dark theme
+- **Lucide React** — Icon library
+- **In-memory store** — Global singleton, no database
+
+## Notes
+
+- Data resets on server restart (in-memory only)
+- No authentication required
+- All state managed via React `useState` — no Redux/Zustand
+- Seed data cannot be permanently deleted (flagged as `isSystem: true`)
