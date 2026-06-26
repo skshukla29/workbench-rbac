@@ -1,112 +1,193 @@
-# Workbench — Role & Permission Builder
+# 🚀 Workbench – Role & Permission Builder
 
-A production-quality RBAC (Role-Based Access Control) admin dashboard built with Next.js 15, TypeScript, and Tailwind CSS.
+A full-stack **Role & Permission Builder** built for the Workbench SaaS platform.
 
-## Features
+This application enables administrators to create custom roles, assign permissions, manage team members, and calculate effective permissions when users have multiple roles.
 
-- **Role Management** — Create, edit, and delete custom roles with granular permissions
-- **Permission Matrix** — Interactive checkbox grid organized by resource and action
-- **User Management** — Assign and unassign multiple roles per user
-- **Effective Permissions** — Real-time union resolution across all assigned roles
-- **Toast Notifications** — Feedback for every action
-- **Delete Confirmation** — Safeguarded destructive operations
-- **Search & Filter** — Quickly find roles by name or description
+---
 
-## Quick Start
+## 🌐 Live Demo
 
-```bash
-# Install dependencies
-npm install
+**Application:** https://workbench-rbac-mocha.vercel.app/
 
-# Start development server
-npm run dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+## ✨ Features
 
-## Permission Matrix
+- ✅ Create custom roles
+- ✅ Edit existing roles
+- ✅ Delete custom roles
+- ✅ Permission Matrix (19 predefined permissions)
+- ✅ Assign roles to team members
+- ✅ Remove roles from team members
+- ✅ Effective Permission Resolution (UNION strategy)
+- ✅ Add new team members
+- ✅ Delete team members
+- ✅ Responsive SaaS Dashboard
+- ✅ Modern UI with Drawer, Toasts & Confirmation Modals
 
-19 permissions across 5 resources:
+---
 
-| Resource | Permissions |
-|----------|-------------|
-| Projects | view, create, edit, delete, archive |
-| Tasks    | view, create, edit, delete, assign  |
-| Members  | view, invite, remove, update_role   |
-| Billing  | view, update, download_invoices     |
-| Settings | view, update                        |
+## 🛠 Tech Stack
 
-## Seed Data
+| Technology | Purpose |
+|------------|---------|
+| Next.js 15 | Frontend + API Routes |
+| TypeScript | Type Safety |
+| Tailwind CSS | Styling |
+| React | UI |
+| In-Memory Store | Data Storage |
 
-### Roles
+---
 
-| Role | Permissions | Description |
-|------|-------------|-------------|
-| Owner | All 19 | Full workspace access |
-| Admin | 18 (no billing:download_invoices) | Manages projects, tasks, members |
-| Viewer | 3 (view only) | Read-only access |
-| Contractor | 7 (project + task, no delete/billing/settings) | External collaborator |
+# 📸 Design & Planning
 
-### Users
+Before starting the implementation, I first designed the application's architecture, role hierarchy, permission model, and user flow on paper. This helped me define the data model and overall workflow before writing code.
 
-| User | Roles | Effective Permissions |
-|------|-------|-----------------------|
-| Alex Kim | Owner + Admin | 19 (union = all) |
-| Priya Sharma | Contractor | 7 |
-| Marcus Lee | Viewer | 3 |
-| Sara Torres | Admin | 18 |
+## Initial Role & Permission Planning
 
-## API Reference
+![Planning 1](./public/planning/planning-1.png)
 
-```
-GET    /api/permissions
-GET    /api/roles
-POST   /api/roles
-PUT    /api/roles/:id
-DELETE /api/roles/:id
-GET    /api/users
-POST   /api/users/:id/roles
-DELETE /api/users/:id/roles
-GET    /api/users/:id/effective-permissions
-```
+---
 
-## Project Structure
+## Permission Matrix & Data Modeling
+
+![Planning 2](./public/planning/planning-2.png)
+
+---
+
+## Final UI Layout
+
+![Final Layout](./public/planning/final-layout.png)
+
+# 🔐 Permission Resolution
+
+This project follows the **UNION** permission strategy.
+
+When a user has multiple roles, all unique permissions from those roles are combined.
+
+### Example
+
+Role A
 
 ```
-workbench-rbac/
-├── app/
-│   ├── api/              # Next.js Route Handlers
-│   ├── globals.css       # Design tokens + animations
-│   ├── layout.tsx        # Root layout with ToastProvider
-│   └── page.tsx          # Single dashboard page
-├── components/
-│   ├── RoleList.tsx      # Left panel
-│   ├── RoleEditor.tsx    # Middle panel
-│   ├── PermissionMatrix.tsx
-│   ├── UsersPanel.tsx    # Right panel
-│   ├── EffectivePermissions.tsx
-│   ├── Toast.tsx
-│   └── ConfirmModal.tsx
-├── lib/
-│   ├── store.ts          # In-memory store (global singleton)
-│   └── permissions.ts   # Matrix + union resolver
-├── types/
-│   └── index.ts
+projects:view
+projects:create
+```
+
+Role B
+
+```
+projects:edit
+tasks:view
+```
+
+Effective Permissions
+
+```
+projects:view
+projects:create
+projects:edit
+tasks:view
+```
+
+---
+
+# 📂 Project Structure
+
+```
+workbench-rbac
+│
+├── app
+│   ├── api
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+│
+├── components
+│   ├── layout
+│   ├── roles
+│   ├── users
+│   └── ui
+│
+├── data
+│
+├── lib
+│
+├── public
+│   └── screenshots
+│
+├── types
+│
 ├── Architecture.md
 └── README.md
 ```
 
-## Tech Stack
+---
 
-- **Next.js 15** — App Router, Route Handlers, Turbopack
-- **TypeScript** — Strict typing throughout
-- **Tailwind CSS** — Utility-first dark theme
-- **Lucide React** — Icon library
-- **In-memory store** — Global singleton, no database
+# 🚀 Getting Started
 
-## Notes
+Clone the repository
 
-- Data resets on server restart (in-memory only)
-- No authentication required
-- All state managed via React `useState` — no Redux/Zustand
-- Seed data cannot be permanently deleted (flagged as `isSystem: true`)
+```bash
+git clone https://github.com/skshukla29/workbench-rbac.git
+```
+
+Move into the project
+
+```bash
+cd workbench-rbac
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run the development server
+
+```bash
+npm run dev
+```
+
+Open your browser
+
+```
+http://localhost:3000
+```
+
+---
+
+# 📄 Architecture
+
+For implementation details and design decisions, see:
+
+```
+Architecture.md
+```
+
+---
+
+# 🎯 Assignment Scope
+
+Implemented features:
+
+- Role Management
+- Permission Matrix
+- User Management
+- Role Assignment
+- Effective Permission Resolution
+- Responsive Dashboard
+- Team Member Drawer
+- Add/Delete Member
+- Toast Notifications
+- Confirmation Dialogs
+
+---
+
+# 👨‍💻 Author
+
+**Shashikant**
+
+Built as part of the **Software Development Engineer Intern Assignment** for **The Internet Folks**.
